@@ -1,6 +1,6 @@
 # StockGPT
-Predict Stock movements with GPT-4 or GPT-3.5
-inspired by this paper: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4412788
+This project uses OpenAI's GPT (GPT-3.5 / GPT-4) and NewsAPI to estimate the **sentiment impact** of news headlines on the stock price of companies. Inspired by real-world sentiment-based prediction research, it helps understand how daily news might affect stock movement.
+
 
 ### Currently Untested!
 
@@ -8,10 +8,35 @@ inspired by this paper: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4412
 Please only use this to see how it correlates to stock movements rather than use it to invest.
 it's probably not very good at it anyways.
 
-# How it works
-For every company you put in company.txt, it'll search the internet for news articles in from last day about your company.
-It will evaluate each headline as a number between -1 and 1, signifying if it will impact the stock price negatively, postively or not at all.
-It generates the reports for you on each company's healdines, in the form of a .csv file. And a final report which includes the api costs.
+🚀 How It Works
+
+1. **Input Companies**  
+   Add a list of company names in `companies.txt`, one per line.
+
+2. **Fetch News**  
+   For each company, the script uses [NewsAPI](https://newsapi.org) to fetch recent headlines.
+
+3. **Analyze Sentiment with GPT**  
+   Headlines are analyzed using OpenAI's GPT (via `auth.txt` API key). Each headline gets a score between `-1.0` (very negative) to `+1.0` (very positive).
+
+4. **Generate Reports**  
+   - Individual CSV reports for each company are saved in `/Individual_Reports/`
+   - A `report.csv` file is generated with mean sentiment score and estimated API usage cost
+
+📁 File Structure
+
+- `sgpt.py` – Main script
+- `auth.txt` – Your OpenAI API key (one line)
+- `newsapi_key.txt` – Your NewsAPI key (one line)
+- `companies.txt` – List of companies to analyze
+- `report.csv` – Overall summary output
+- `/Individual_Reports/` – Folder with per-company results
+
+🧪 API Limitations (Important)
+
+- **OpenAI Free Tier:** Has limited usage per day/month. Once exhausted, sentiment scoring will not occur, resulting in all scores being `0`.
+- **NewsAPI Free Plan:** Sometimes returns no articles for lesser-known companies or due to quota limits.
+- ✅ The code handles these gracefully — it skips empty cases without crashing.
 
 # How to use it
 1. If you haven't installed the dependencies already, run, ```pip install -r requirements.txt```
